@@ -1,39 +1,53 @@
 ﻿using System;
 
-namespace ข้อสอบ4_DDA
+namespace ข้อสอบข้อ3กล้อง
 {
     class Program
     {
         static void Main(string[] args)
         {
-            float x, y, dx, dy, step;
-            float x1, y1, x2, y2;
+            string mode; 
+            mode = Console.ReadLine();
+            double flimblackwidth;
+            flimblackwidth = double.Parse(Console.ReadLine());
 
-            x1 = float.Parse(Console.ReadLine());
-            y1 = float.Parse(Console.ReadLine());
-            x2 = float.Parse(Console.ReadLine());
-            y2 = float.Parse(Console.ReadLine());
-
-            dx = x2 - x1;
-            dy = y2 - y1;
-            if (Math.Abs(dx) >= Math.Abs(dy))
-            { step = Math.Abs(dx); }
-            else
-            { step = Math.Abs(dy); }
-            dx /= step;
-            dy /= step;
-            x = x1;
-            y = y1;
-            int i = 1;
-            while (i <= step)
+            if (flimblackwidth > 0)
             {
-                Console.WriteLine("{0},{1}", x, y);
-                x += dx;
-                y += dy;
-                i++;
+                double flenght, fov;
+                if (mode == "flenght")
+                {
+                    flenght = double.Parse(Console.ReadLine());
+                    if (flenght > 0)
+                    {
+                        fov = 2 * Math.Atan(flimblackwidth / (2 * flenght));
+                        Console.WriteLine("flenght={0}", flenght,"fov = {1}", fov);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid flenght Please input again.");
+                    }
+                }
+                else if (mode == "fov")
+                {
+                    fov = double.Parse(Console.ReadLine());
+                    if (fov > 0.1 && fov < 6.28)
+                    {
+                        flenght = flimblackwidth / (2 * Math.Tan(fov / 2));
+                        Console.WriteLine("flenght = {0}", flenght,"fov = {1}", fov);
+                        
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid fov Please input again.");
+                    }
+                }
             }
-            Console.ReadLine();
- 
+            else
+            { 
+            
+            }
+                
+            
         }
     }
 }
