@@ -1,53 +1,88 @@
 ﻿using System;
 
-namespace ข้อสอบข้อ3กล้อง
+namespace DNA_Replication
 {
     class Program
     {
         static void Main(string[] args)
         {
-            string mode; 
-            mode = Console.ReadLine();
-            double flimblackwidth;
-            flimblackwidth = double.Parse(Console.ReadLine());
+            string halfDNA, repDNA;
+            char ans, go;
+            bool again = true;
 
-            if (flimblackwidth > 0)
+            while (again == true)
             {
-                double flenght, fov;
-                if (mode == "flenght")
+                bool going = true, correct = false;
+                halfDNA = Convert.ToString(Console.ReadLine());
+                if (IsvalidSequence(halfDNA))
                 {
-                    flenght = double.Parse(Console.ReadLine());
-                    if (flenght > 0)
+                    Console.WriteLine("Current half DNA sequence : " + halfDNA);
+                    while (going == true)
                     {
-                        fov = 2 * Math.Atan(flimblackwidth / (2 * flenght));
-                        Console.WriteLine("flenght={0}", flenght,"fov = {1}", fov);
+                        Console.Write("Do you want to replicate it? (Y/N): ");
+                        ans = Convert.ToChar(Console.ReadLine());
+                        if (ans == 'Y')
+                        {
+                            going = false;
+                            repDNA = ReplicateSequence(halfDNA);
+                            Console.WriteLine("Replicated half DNA sequence: " + repDNA);
+                        }
+                        else if (ans == 'N')
+                        {
+                            going = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please input Y or N.");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("That half DNA sequence is invalid.");
+                }
+                while (correct == false)
+                {
+                    Console.Write("Do you want to process another sequence? (Y/N): ");
+                    go = Convert.ToChar(Console.ReadLine());
+                    if (go == 'Y')
+                    {
+                        again = true;
+                        correct = true;
+                    }
+                    else if (go == 'N')
+                    {
+                        again = false;
+                        correct = true;
                     }
                     else
                     {
-                        Console.WriteLine("Invalid flenght Please input again.");
+                        Console.WriteLine("Please input Y or N.");
                     }
                 }
-                else if (mode == "fov")
+            }
+        }
+
+        static bool IsvalidSequence(string halfDNASequence)
+        {
+            foreach(char nucleotide in halfDNASequence)
+            {
+                if (!"ATCG".Contains(nucleotide))
                 {
-                    fov = double.Parse(Console.ReadLine());
-                    if (fov > 0.1 && fov < 6.28)
-                    {
-                        flenght = flimblackwidth / (2 * Math.Tan(fov / 2));
-                        Console.WriteLine("flenght = {0}", flenght,"fov = {1}", fov);
-                        
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid fov Please input again.");
-                    }
+                    return false;
                 }
             }
-            else
-            { 
-            
+            return true;
+        }
+
+        static string ReplicateSequence(string halfDNASequence)
+        {
+            string result = "";
+            foreach (char nucleotide in halfDNASequence)
+            {
+                result += "TAGC"["ATCG".IndexOf(nucleotide)];
             }
-                
-            
+            return result;
         }
     }
 }
