@@ -1,74 +1,183 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace test3
+namespace test4
 {
     class Program
     {
+        enum Status
+        {
+            Low,
+            Normal,
+            High,
+            Extreme
+        }
+
+        struct Town
+        {
+            public string Name;
+            public int[] TownContacts;
+            public Status stat;
+
+            public Town(string name, int[] contact)
+            {
+                Name = name;
+                TownContacts = contact;
+                stat = Status.Low;
+            }
+        }
+
         static void Main(string[] args)
         {
-            bool isEnd = false, isCorrect = false;
-            List<double> arr = new List<double>();
-            int i = 0, count = 0; ;
-            double number;
-
-            while(isEnd == false)
+            int count = Convert.ToInt32(Console.ReadLine());
+            Town[] towns = new Town[count];
+            for (int i = 0; i < count; i++)
             {
-                string input = Console.ReadLine();
-                if (double.TryParse(input, out number)){
-                    arr.Add(Convert.ToDouble(input));
-                    i++;
-                    count += 1;
-                }
-                else if(input == "End")
+                string name = Console.ReadLine();
+                int contactCount = Convert.ToInt32(Console.ReadLine());
+                int[] contacts = new int[contactCount];
+                for (int j = 0; j < contactCount; j++)
                 {
-                    isEnd = true;
+                    bool isCorrect = false;
+                    while (isCorrect == false)
+                    {
+                        int townID = Convert.ToInt32(Console.ReadLine());
+                        int num = j;
+                        bool valid = true;
+                        if (j != 0)
+                        {
+                            while (num >= 0)
+                            {
+                                if (townID == contacts[num])
+                                {
+                                    valid = false;
+                                    break;
+                                }
+                                else
+                                {
+                                    num--;
+                                }
+                            }
+                            if(valid == true)
+                            {
+                                if(townID >= count)
+                                {
+                                    valid = false;
+                                }
+                                else if(townID == i)
+                                {
+                                    valid = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (townID >= count)
+                            {
+                                valid = false;
+                            }
+                            if (townID == i)
+                            {
+                                valid = false;
+                            }
+                        }
+
+                        if (valid == true)
+                        {
+                            contacts[j] = townID;
+                            isCorrect = true;
+                        }
+                        else if(valid == false)
+                        {
+                            Console.WriteLine("Invalid ID.");
+                        }
+                    }
                 }
+                towns[i] = new Town(name, contacts);
             }
 
-            while(isCorrect == false)
+            bool isTrue = false;
+            while(isTrue == false)
             {
-                string input = Console.ReadLine();
-                if(input == "FindMax")
-                {
-                    double max = 0;
-                    for(int j = 0; j < count; j++)
+                string situation = Console.ReadLine();
+                if(situation == "Outbreak" || situation == "Vaccinate" || situation == "Lock down"){
+                    int townID = Convert.ToInt32(Console.ReadLine());
+                    if(situation == "Outbreak")
                     {
-                        if(arr[j] > max)
+                        if((int)towns[townID].stat <= 1)
                         {
-                            max = arr[j];
+                            towns[townID].stat += 2;
+                        }
+                        else if((int)towns[townID].stat == 2)
+                        {
+                            towns[townID].stat += 1;
+                        }
+                        for (int k = 0; k < towns[townID].TownContacts.Length; k++)
+                        {
+                            if((int)towns[towns[townID].TownContacts[k]].stat <= 2)
+                            {
+                                towns[towns[townID].TownContacts[k]].stat += 1;
+                            }
                         }
                     }
-                    Console.WriteLine(max);
-                    isCorrect = true;
-                }
-                else if(input == "FindMin")
-                {
-                    double min = arr[0];
-                    for (int j = 0; j < count; j++)
+                    else if(situation == "Vaccinate")
                     {
-                        if (arr[j] < min)
+                        towns[townID].stat = 0;
+                    }
+                    else if(situation == "Lock down")
+                    {
+                        if ((int)towns[townID].stat > 0)
                         {
-                            min = arr[j];
+                            towns[townID].stat -= 1;
+                        }
+                        for (int k = 0; k < towns[townID].TownContacts.Length; k++)
+                        {
+                            if ((int)towns[towns[townID].TownContacts[k]].stat > 0)
+                            {
+                                towns[towns[townID].TownContacts[k]].stat -= 1;
+                            }
                         }
                     }
-                    Console.WriteLine(min);
-                    isCorrect = true;
+                    for (int i = 0; i < count; i++)
+                    {
+                        Console.WriteLine("{0} {1} {2}", i, towns[i].Name, (int)towns[i].stat);
+                    }
                 }
-                else if (input == "FindMean")
+                else if(situation == "Spread")
                 {
-                    double sum = 0, avr;
+                    bool canFind = false;
                     for (int j = 0; j < count; j++)
                     {
-                        sum += arr[j];
+                        for (int k = 0; k < towns[j].TownContacts.Length; k++)
+                        {
+                            if ((int)towns[towns[j].TownContacts[k]].stat > (int)towns[j].stat)
+                            {
+                                canFind = true;
+                                break;
+                            }
+                        }
+                        if(canFind == true)
+                        {
+                            for (int l = 0; l < count; l++)
+                            {
+                                if ((int)towns[l].stat <= 2)
+                                {
+                                    towns[l].stat += 1;
+                                }
+                            }
+                        }
                     }
-                    avr = sum / count;
-                    Console.WriteLine(avr);
-                    isCorrect = true;
+                    for (int i = 0; i < count; i++)
+                    {
+                        Console.WriteLine("{0} {1} {2}", i, towns[i].Name, (int)towns[i].stat);
+                    }
+                }
+                else if (situation == "Exit")
+                {
+                    isTrue = true;
                 }
                 else
                 {
-                    Console.WriteLine("Invalid Mode.");
+                    Console.WriteLine("Invalid");
                 }
             }
         }
