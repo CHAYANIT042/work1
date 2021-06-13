@@ -1,66 +1,51 @@
 ﻿using System;
 
-namespace test5
+namespace test6
 {
     class Program
     {
-        struct Item
-        {
-            public string Name;
-            public string Type;
-
-            public Item(string name, string type)
-            {
-                Name = name;
-                Type = type;
-            }
-        }
-
         static void Main(string[] args)
         {
-            int count = Convert.ToInt32(Console.ReadLine());
-            Item[] items = new Item[count];
-            for (int i = 0; i < items.Length; i++)
+            string[] recordFile;
+
+            recordFile = new string[5];
+
+            recordFile[0] = " ";
+            recordFile[1] = " ";
+            recordFile[2] = " ";
+            recordFile[3] = " ";
+            recordFile[4] = " ";
+
+            Console.WriteLine("Please input a number from 0 - 3 to choose the following menu:");
+            Console.WriteLine("[0] Show all recent files");
+            Console.WriteLine("[1] Open new file");
+            Console.WriteLine("[2] Open recent file");
+            Console.WriteLine("[3] Exit");
+
+            int number;
+            number = int.Parse(Console.ReadLine());
+            do
             {
-                string name = Console.ReadLine();
-                string type = Console.ReadLine();
-
-                items[i] = new Item(name, type);
-            }
-
-            bool isEnd = false;
-            while (isEnd == false)
-            {
-                string search = Console.ReadLine();
-                if(search == "ShowAll")
+                if (number == 0)
                 {
-                    for (int i = 0; i < items.Length; i++)
-                    {
-                        Console.WriteLine(items[i].Name);
-                        Console.WriteLine(items[i].Type);
-                        Console.WriteLine();
-                    }
-                }
-                else
-                {
-                    bool isFound = false;
-                    for (int i = 0; i < items.Length; i++)
-                    {
-                        if (search == items[i].Type)
-                        {
-                            Console.WriteLine(items[i].Name);
-                            Console.WriteLine();
-                            isFound = true;
-                        }
-                    }
 
-                    if(isFound == false)
-                    {
-                        Console.WriteLine("End");
-                        isEnd = true;
-                    }
                 }
-            }
+                else if (number == 1)
+                {
+
+                }
+                else if (number == 2)
+                {
+
+                }
+                else if (number == 3)
+                { 
+                
+                }
+
+
+                    Console.WriteLine("Invalid menu number.");
+            } while ( );
         }
     }
 }
