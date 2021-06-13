@@ -1,85 +1,98 @@
 ﻿using System;
 
-namespace test1
+namespace test2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            int[,] nums = new int[3, 3];
-            int row, col;
+            int i, j;
+            int count = Convert.ToInt32(Console.ReadLine());
+            int[] arr1 = new int[count];
+            int[] arr2 = new int[count];
+            int[] arr3 = new int[count];
+            int[] arr4 = new int[count];
 
-            row = 0;
-            col = 0;
-            for(int i = 0; i < 9; i++)
+            for (i = 0; i < arr1.Length; i++)
             {
-                int num = Convert.ToInt32(Console.ReadLine());
-                if(row <= 2)
+                arr1[i] = Convert.ToInt32(Console.ReadLine());
+            }
+
+            arr2 = arr1;
+            arr3 = arr1;
+            arr4 = arr1;
+
+            for (i = 0; i < arr1.Length; i++)
+            {
+                for (j = i; j < arr1.Length; j++)
                 {
-                    if(col <= 2)
+                    if (arr1[i] > arr1[j])
                     {
-                        nums[row, col] = num;
-                        col++;
+                        int temp = arr1[i];
+                        arr1[i] = arr1[j];
+                        arr1[j] = temp;
                     }
-                    else
+                }
+            }
+            Console.Write("Compare's sort: ");
+            for (i = 0; i < arr1.Length; i++)
+            {
+                Console.Write(arr1[i] + " ");
+            }
+            Console.WriteLine();
+
+            Array.Sort(arr2);
+            Console.Write("Com's sort: ");
+            for (i = 0; i < arr2.Length; i++)
+            {
+                Console.Write(arr2[i] + " ");
+            }
+            Console.WriteLine();
+
+            for (i = 0; i < arr3.Length; i++)
+            {
+                int temp = arr3[i];
+                int currentIndex = i;
+
+                while (currentIndex > 0 && arr3[currentIndex - 1] > temp)
+                {
+                    arr3[currentIndex] = arr3[currentIndex - 1];
+                    currentIndex--;
+                }
+
+                arr3[currentIndex] = temp;
+            }
+            Console.Write("May's sort: ");
+            for (i = 0; i < arr3.Length; i++)
+            {
+                Console.Write(arr3[i] + " ");
+            }
+            Console.WriteLine();
+
+            for (i = 0; i < arr4.Length; i++)
+            {
+                int min = i;
+                for (j = i + 1; j < arr4.Length; j++)
+                {
+                    if (arr4[min] > arr4[j])
                     {
-                        col = 0;
-                        row++;
-                        nums[row, col] = num;
-                        col++;
+                        min = j;
                     }
                 }
-            }
 
-            int rowZero = 0, colZero = 0;
-            for(int i = 0; i < 3; i++)
-            {
-                for(int j = 0; j < 3; j++)
+                if (min != i)
                 {
-                    if(nums[i, j] == 0)
-                    {
-                        rowZero = i;
-                        colZero = j;
-                    }
-                    Console.Write(nums[i, j]+" ");
-                }
-                Console.WriteLine();
-            }
-
-            int numAdd = Convert.ToInt32(Console.ReadLine());
-            bool isValid = false;
-            for(col = 0; col < 3; col++)
-            {
-                if(numAdd == nums[rowZero, col])
-                {
-                    isValid = true;
+                    int lowerValue = arr4[min];
+                    arr4[min] = arr4[i];
+                    arr4[i] = lowerValue;
                 }
             }
-
-            for (row = 0; row < 3; row++)
+            Console.Write("Sea's sort: ");
+            for (i = 0; i < arr4.Length; i++)
             {
-                if (numAdd == nums[colZero, row])
-                {
-                    isValid = true;
-                }
+                Console.Write(arr4[i] + " ");
             }
-
-            if (isValid)
-            {
-                Console.WriteLine("The number is avalible.");
-            }
-            else
-            {
-                nums[rowZero, colZero] = numAdd;
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        Console.Write(nums[i, j] + " ");
-                    }
-                    Console.WriteLine();
-                }
-            }
+            Console.WriteLine();
         }
     }
 }
